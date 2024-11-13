@@ -1,164 +1,70 @@
 # Changelog
 
-## v1.6.0 (24/11/2017)
-*No changelog for this release.*
+All notable changes to this project will be documented in this file.
 
----
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## v2.0.4 (24/11/2017)
-- [**closed**] Switch to mime-score module for resolving extension contention issues. [#182](https://github.com/broofa/node-mime/issues/182)
-- [**closed**] Update mime-db to 1.31.0 in v1.x branch [#181](https://github.com/broofa/node-mime/issues/181)
+## [v1.2.2](https://github.com/ljharb/set-function-length/compare/v1.2.1...v1.2.2) - 2024-03-09
 
----
+### Commits
 
-## v1.5.0 (22/11/2017)
-- [**closed**] need ES5 version ready in npm package [#179](https://github.com/broofa/node-mime/issues/179)
-- [**closed**] mime-db no trace of iWork - pages / numbers / etc. [#178](https://github.com/broofa/node-mime/issues/178)
-- [**closed**] How it works in brownser ? [#176](https://github.com/broofa/node-mime/issues/176)
-- [**closed**] Missing `./Mime` [#175](https://github.com/broofa/node-mime/issues/175)
-- [**closed**] Vulnerable Regular Expression [#167](https://github.com/broofa/node-mime/issues/167)
+- [types] use shared config [`027032f`](https://github.com/ljharb/set-function-length/commit/027032fe9cc439644a07248ea6a8d813fcc767cb)
+- [actions] remove redundant finisher; use reusable workflow [`1fd4fb1`](https://github.com/ljharb/set-function-length/commit/1fd4fb1c58bd5170f0dcff7e320077c0aa2ffdeb)
+- [types] use a handwritten d.ts file instead of emit [`01b9761`](https://github.com/ljharb/set-function-length/commit/01b9761742c95e1118e8c2d153ce2ae43d9731aa)
+- [Deps] update `define-data-property`, `get-intrinsic`, `has-property-descriptors` [`bee8eaf`](https://github.com/ljharb/set-function-length/commit/bee8eaf7749f325357ade85cffeaeef679e513d4)
+- [Dev Deps] update `call-bind`, `tape` [`5dae579`](https://github.com/ljharb/set-function-length/commit/5dae579fdc3aab91b14ebb58f9c19ee3f509d434)
+- [Tests] use `@arethetypeswrong/cli` [`7e22425`](https://github.com/ljharb/set-function-length/commit/7e22425d15957fd3d6da0b6bca4afc0c8d255d2d)
 
----
+## [v1.2.1](https://github.com/ljharb/set-function-length/compare/v1.2.0...v1.2.1) - 2024-02-06
 
-## v2.0.3 (25/09/2017)
-*No changelog for this release.*
+### Commits
 
----
+- [Dev Deps] update `call-bind`, `tape`, `typescript` [`d9a4601`](https://github.com/ljharb/set-function-length/commit/d9a460199c4c1fa37da9ebe055e2c884128f0738)
+- [Deps] update `define-data-property`, `get-intrinsic` [`38d39ae`](https://github.com/ljharb/set-function-length/commit/38d39aed13a757ed36211d5b0437b88485090c6b)
+- [Refactor] use `es-errors`, so things that only need those do not need `get-intrinsic` [`b4bfe5a`](https://github.com/ljharb/set-function-length/commit/b4bfe5ae0953b906d55b85f867eca5e7f673ebf4)
 
-## v1.4.1 (25/09/2017)
-- [**closed**] Issue when bundling with webpack [#172](https://github.com/broofa/node-mime/issues/172)
+## [v1.2.0](https://github.com/ljharb/set-function-length/compare/v1.1.1...v1.2.0) - 2024-01-14
 
----
+### Commits
 
-## v2.0.2 (15/09/2017)
-- [**V2**] fs.readFileSync is not a function [#165](https://github.com/broofa/node-mime/issues/165)
-- [**closed**] The extension for video/quicktime should map to .mov, not .qt [#164](https://github.com/broofa/node-mime/issues/164)
-- [**V2**] [v2 Feedback request] Mime class API [#163](https://github.com/broofa/node-mime/issues/163)
-- [**V2**] [v2 Feedback request] Resolving conflicts over extensions [#162](https://github.com/broofa/node-mime/issues/162)
-- [**V2**] Allow callers to load module with official, full, or no defined types.  [#161](https://github.com/broofa/node-mime/issues/161)
-- [**V2**] Use "facets" to resolve extension conflicts [#160](https://github.com/broofa/node-mime/issues/160)
-- [**V2**] Remove fs and path dependencies [#152](https://github.com/broofa/node-mime/issues/152)
-- [**V2**] Default content-type should not be application/octet-stream [#139](https://github.com/broofa/node-mime/issues/139)
-- [**V2**] reset mime-types [#124](https://github.com/broofa/node-mime/issues/124)
-- [**V2**] Extensionless paths should return null or false [#113](https://github.com/broofa/node-mime/issues/113)
+- [New] add types [`f6d9088`](https://github.com/ljharb/set-function-length/commit/f6d9088b9283a3112b21c6776e8bef6d1f30558a)
+- [Fix] ensure `env` properties are always booleans [`0c42f84`](https://github.com/ljharb/set-function-length/commit/0c42f84979086389b3229e1b4272697fd352275a)
+- [Dev Deps] update `aud`, `call-bind`, `npmignore`, `tape` [`2b75f75`](https://github.com/ljharb/set-function-length/commit/2b75f75468093a4bb8ce8ca989b2edd2e80d95d1)
+- [Deps] update `get-intrinsic`, `has-property-descriptors` [`19bf0fc`](https://github.com/ljharb/set-function-length/commit/19bf0fc4ffaa5ad425acbfa150516be9f3b6263a)
+- [meta] add `sideEffects` flag [`8bb9b78`](https://github.com/ljharb/set-function-length/commit/8bb9b78c11c621123f725c9470222f43466c01d0)
 
----
+## [v1.1.1](https://github.com/ljharb/set-function-length/compare/v1.1.0...v1.1.1) - 2023-10-19
 
-## v2.0.1 (14/09/2017)
-- [**closed**] Changelog for v2.0 does not mention breaking changes [#171](https://github.com/broofa/node-mime/issues/171)
-- [**closed**] MIME breaking with 'class' declaration as it is without 'use strict mode' [#170](https://github.com/broofa/node-mime/issues/170)
+### Fixed
 
----
+- [Fix] move `define-data-property` to runtime deps [`#2`](https://github.com/ljharb/set-function-length/issues/2)
 
-## v2.0.0 (12/09/2017)
-- [**closed**] woff and woff2 [#168](https://github.com/broofa/node-mime/issues/168)
+### Commits
 
----
+- [Dev Deps] update `object-inspect`; add missing `call-bind` [`5aecf79`](https://github.com/ljharb/set-function-length/commit/5aecf79e7d6400957a5d9bd9ac20d4528908ca18)
 
-## v1.4.0 (28/08/2017)
-- [**closed**] support for ac3 voc files [#159](https://github.com/broofa/node-mime/issues/159)
-- [**closed**] Help understanding change from application/xml to text/xml [#158](https://github.com/broofa/node-mime/issues/158)
-- [**closed**] no longer able to override mimetype [#157](https://github.com/broofa/node-mime/issues/157)
-- [**closed**] application/vnd.adobe.photoshop [#147](https://github.com/broofa/node-mime/issues/147)
-- [**closed**] Directories should appear as something other than application/octet-stream [#135](https://github.com/broofa/node-mime/issues/135)
-- [**closed**] requested features [#131](https://github.com/broofa/node-mime/issues/131)
-- [**closed**] Make types.json loading optional? [#129](https://github.com/broofa/node-mime/issues/129)
-- [**closed**] Cannot find module './types.json' [#120](https://github.com/broofa/node-mime/issues/120)
-- [**V2**] .wav files show up as "audio/x-wav" instead of "audio/x-wave" [#118](https://github.com/broofa/node-mime/issues/118)
-- [**closed**] Don't be a pain in the ass for node community [#108](https://github.com/broofa/node-mime/issues/108)
-- [**closed**] don't make default_type global [#78](https://github.com/broofa/node-mime/issues/78)
-- [**closed**] mime.extension() fails if the content-type is parameterized [#74](https://github.com/broofa/node-mime/issues/74)
+## [v1.1.0](https://github.com/ljharb/set-function-length/compare/v1.0.1...v1.1.0) - 2023-10-13
 
----
+### Commits
 
-## v1.3.6 (11/05/2017)
-- [**closed**] .md should be text/markdown as of March 2016 [#154](https://github.com/broofa/node-mime/issues/154)
-- [**closed**] Error while installing mime [#153](https://github.com/broofa/node-mime/issues/153)
-- [**closed**] application/manifest+json [#149](https://github.com/broofa/node-mime/issues/149)
-- [**closed**] Dynamic adaptive streaming over HTTP (DASH) file extension typo [#141](https://github.com/broofa/node-mime/issues/141)
-- [**closed**] charsets image/png undefined [#140](https://github.com/broofa/node-mime/issues/140)
-- [**closed**] Mime-db dependency out of date [#130](https://github.com/broofa/node-mime/issues/130)
-- [**closed**] how to support plist？ [#126](https://github.com/broofa/node-mime/issues/126)
-- [**closed**] how does .types file format look like? [#123](https://github.com/broofa/node-mime/issues/123)
-- [**closed**] Feature: support for expanding MIME patterns [#121](https://github.com/broofa/node-mime/issues/121)
-- [**closed**] DEBUG_MIME doesn't work [#117](https://github.com/broofa/node-mime/issues/117)
+- [New] add `env` entry point [`475c87a`](https://github.com/ljharb/set-function-length/commit/475c87aa2f59b700aaed589d980624ec596acdcb)
+- [Tests] add coverage with `nyc` [`14f0bf8`](https://github.com/ljharb/set-function-length/commit/14f0bf8c145ae60bf14a026420a06bb7be132c36)
+- [eslint] fix linting failure [`fb516f9`](https://github.com/ljharb/set-function-length/commit/fb516f93c664057138c53559ef63c8622a093335)
+- [Deps] update `define-data-property` [`d727e7c`](https://github.com/ljharb/set-function-length/commit/d727e7c6c9a40d7bf26797694e500ea68741feea)
 
----
+## [v1.0.1](https://github.com/ljharb/set-function-length/compare/v1.0.0...v1.0.1) - 2023-10-12
 
-## v1.3.4 (06/02/2015)
-*No changelog for this release.*
+### Commits
 
----
+- [Refactor] use `get-intrinsic`, since it‘s in the dep graph anyways [`278a954`](https://github.com/ljharb/set-function-length/commit/278a954a06cd849051c569ff7aee56df6798933e)
+- [meta] add `exports` [`72acfe5`](https://github.com/ljharb/set-function-length/commit/72acfe5a0310071fb205a72caba5ecbab24336a0)
 
-## v1.3.3 (06/02/2015)
-*No changelog for this release.*
+## v1.0.0 - 2023-10-12
 
----
+### Commits
 
-## v1.3.1 (05/02/2015)
-- [**closed**] Consider adding support for Handlebars .hbs file ending [#111](https://github.com/broofa/node-mime/issues/111)
-- [**closed**] Consider adding support for hjson. [#110](https://github.com/broofa/node-mime/issues/110)
-- [**closed**] Add mime type for Opus audio files [#94](https://github.com/broofa/node-mime/issues/94)
-- [**closed**] Consider making the `Requesting New Types` information more visible [#77](https://github.com/broofa/node-mime/issues/77)
-
----
-
-## v1.3.0 (05/02/2015)
-- [**closed**] Add common name? [#114](https://github.com/broofa/node-mime/issues/114)
-- [**closed**] application/x-yaml [#104](https://github.com/broofa/node-mime/issues/104)
-- [**closed**] Add mime type for WOFF file format 2.0 [#102](https://github.com/broofa/node-mime/issues/102)
-- [**closed**] application/x-msi for .msi [#99](https://github.com/broofa/node-mime/issues/99)
-- [**closed**] Add mimetype for gettext translation files [#98](https://github.com/broofa/node-mime/issues/98)
-- [**closed**] collaborators [#88](https://github.com/broofa/node-mime/issues/88)
-- [**closed**] getting errot in installation of mime module...any1 can help? [#87](https://github.com/broofa/node-mime/issues/87)
-- [**closed**] should application/json's charset be utf8? [#86](https://github.com/broofa/node-mime/issues/86)
-- [**closed**] Add "license" and "licenses" to package.json [#81](https://github.com/broofa/node-mime/issues/81)
-- [**closed**] lookup with extension-less file on Windows returns wrong type [#68](https://github.com/broofa/node-mime/issues/68)
-
----
-
-## v1.2.11 (15/08/2013)
-- [**closed**] Update mime.types [#65](https://github.com/broofa/node-mime/issues/65)
-- [**closed**] Publish a new version [#63](https://github.com/broofa/node-mime/issues/63)
-- [**closed**] README should state upfront that "application/octet-stream" is default for unknown extension [#55](https://github.com/broofa/node-mime/issues/55)
-- [**closed**] Suggested improvement to the charset API [#52](https://github.com/broofa/node-mime/issues/52)
-
----
-
-## v1.2.10 (25/07/2013)
-- [**closed**] Mime type for woff files should be application/font-woff and not application/x-font-woff [#62](https://github.com/broofa/node-mime/issues/62)
-- [**closed**] node.types in conflict with mime.types [#51](https://github.com/broofa/node-mime/issues/51)
-
----
-
-## v1.2.9 (17/01/2013)
-- [**closed**] Please update "mime" NPM [#49](https://github.com/broofa/node-mime/issues/49)
-- [**closed**] Please add semicolon [#46](https://github.com/broofa/node-mime/issues/46)
-- [**closed**] parse full mime types [#43](https://github.com/broofa/node-mime/issues/43)
-
----
-
-## v1.2.8 (10/01/2013)
-- [**closed**] /js directory mime is application/javascript. Is it correct? [#47](https://github.com/broofa/node-mime/issues/47)
-- [**closed**] Add mime types for lua code. [#45](https://github.com/broofa/node-mime/issues/45)
-
----
-
-## v1.2.7 (19/10/2012)
-- [**closed**] cannot install 1.2.7 via npm [#41](https://github.com/broofa/node-mime/issues/41)
-- [**closed**] Transfer ownership to @broofa [#36](https://github.com/broofa/node-mime/issues/36)
-- [**closed**] it's wrong to set charset to UTF-8 for text [#30](https://github.com/broofa/node-mime/issues/30)
-- [**closed**] Allow multiple instances of MIME types container [#27](https://github.com/broofa/node-mime/issues/27)
-
----
-
-## v1.2.5 (16/02/2012)
-- [**closed**] When looking up a types, check hasOwnProperty [#23](https://github.com/broofa/node-mime/issues/23)
-- [**closed**] Bump version to 1.2.2 [#18](https://github.com/broofa/node-mime/issues/18)
-- [**closed**] No license [#16](https://github.com/broofa/node-mime/issues/16)
-- [**closed**] Some types missing that are used by html5/css3 [#13](https://github.com/broofa/node-mime/issues/13)
-- [**closed**] npm install fails for 1.2.1 [#12](https://github.com/broofa/node-mime/issues/12)
-- [**closed**] image/pjpeg + image/x-png [#10](https://github.com/broofa/node-mime/issues/10)
-- [**closed**] symlink [#8](https://github.com/broofa/node-mime/issues/8)
-- [**closed**] gzip [#2](https://github.com/broofa/node-mime/issues/2)
-- [**closed**] ALL CAPS filenames return incorrect mime type [#1](https://github.com/broofa/node-mime/issues/1)
+- Initial implementation, tests, readme [`fce14e1`](https://github.com/ljharb/set-function-length/commit/fce14e17586460e4f294405173be72b6ffdf7e5f)
+- Initial commit [`ca7ba85`](https://github.com/ljharb/set-function-length/commit/ca7ba857c7c283f9d26e21f14e71cd388f2cb722)
+- npm init [`6a7e493`](https://github.com/ljharb/set-function-length/commit/6a7e493927736cebcaf5c1a84e69b8e6b7b744d8)
+- Only apps should have lockfiles [`d2bf6c4`](https://github.com/ljharb/set-function-length/commit/d2bf6c43de8a51b02a0aa53e8d62cb50c4a2b0da)

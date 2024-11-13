@@ -1,24 +1,7 @@
-/*---------------------------------------------------------------------------------------------
- *  Copyright (c) Microsoft Corporation. All rights reserved.
- *  Licensed under the MIT License.
- *  REQUIREMENT: This definition is dependent on the @types/node definition.
- *  Install with `npm install @types/node --save-dev`
- *--------------------------------------------------------------------------------------------*/
-
-declare module 'iconv-lite' {
-	export function decode(buffer: Buffer, encoding: string, options?: Options): string;
-
-	export function encode(content: string, encoding: string, options?: Options): Buffer;
-
-	export function encodingExists(encoding: string): boolean;
-
-	export function decodeStream(encoding: string, options?: Options): NodeJS.ReadWriteStream;
-
-	export function encodeStream(encoding: string, options?: Options): NodeJS.ReadWriteStream;
+declare namespace setFunctionLength {
+    type Func = (...args: unknown[]) => unknown;
 }
 
-export interface Options {
-    stripBOM?: boolean;
-    addBOM?: boolean;
-    defaultEncoding?: string;
-}
+declare function setFunctionLength<T extends setFunctionLength.Func = setFunctionLength.Func>(fn: T, length: number, loose?: boolean): T;
+
+export = setFunctionLength;

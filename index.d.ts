@@ -1,3 +1,3 @@
-declare const Error: ErrorConstructor;
+declare function hasProto(): boolean;
 
-export = Error;
+export = hasProto;

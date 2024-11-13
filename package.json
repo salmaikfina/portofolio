@@ -1,50 +1,42 @@
 {
-  "name": "http-errors",
-  "description": "Create HTTP error objects",
-  "version": "2.0.0",
-  "author": "Jonathan Ong <me@jongleberry.com> (http://jongleberry.com)",
+  "name": "negotiator",
+  "description": "HTTP content negotiation",
+  "version": "0.6.3",
   "contributors": [
-    "Alan Plum <me@pluma.io>",
-    "Douglas Christopher Wilson <doug@somethingdoug.com>"
+    "Douglas Christopher Wilson <doug@somethingdoug.com>",
+    "Federico Romero <federico.romero@outboxlabs.com>",
+    "Isaac Z. Schlueter <i@izs.me> (http://blog.izs.me/)"
   ],
   "license": "MIT",
-  "repository": "jshttp/http-errors",
-  "dependencies": {
-    "depd": "2.0.0",
-    "inherits": "2.0.4",
-    "setprototypeof": "1.2.0",
-    "statuses": "2.0.1",
-    "toidentifier": "1.0.1"
-  },
+  "keywords": [
+    "http",
+    "content negotiation",
+    "accept",
+    "accept-language",
+    "accept-encoding",
+    "accept-charset"
+  ],
+  "repository": "jshttp/negotiator",
   "devDependencies": {
     "eslint": "7.32.0",
-    "eslint-config-standard": "14.1.1",
-    "eslint-plugin-import": "2.25.3",
     "eslint-plugin-markdown": "2.2.1",
-    "eslint-plugin-node": "11.1.0",
-    "eslint-plugin-promise": "5.2.0",
-    "eslint-plugin-standard": "4.1.0",
     "mocha": "9.1.3",
     "nyc": "15.1.0"
   },
-  "engines": {
-    "node": ">= 0.8"
-  },
-  "scripts": {
-    "lint": "eslint . && node ./scripts/lint-readme-list.js",
-    "test": "mocha --reporter spec --bail",
-    "test-ci": "nyc --reporter=lcov --reporter=text npm test",
-    "test-cov": "nyc --reporter=html --reporter=text npm test",
-    "version": "node scripts/version-history.js && git add HISTORY.md"
-  },
-  "keywords": [
-    "http",
-    "error"
-  ],
   "files": [
-    "index.js",
+    "lib/",
     "HISTORY.md",
     "LICENSE",
+    "index.js",
     "README.md"
-  ]
+  ],
+  "engines": {
+    "node": ">= 0.6"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "test": "mocha --reporter spec --check-leaks --bail test/",
+    "test-ci": "nyc --reporter=lcov --reporter=text npm test",
+    "test-cov": "nyc --reporter=html --reporter=text npm test"
+  }
 }

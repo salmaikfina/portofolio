@@ -1,169 +1,203 @@
-# http-errors
+# negotiator
 
-[![NPM Version][npm-version-image]][npm-url]
-[![NPM Downloads][npm-downloads-image]][node-url]
-[![Node.js Version][node-image]][node-url]
-[![Build Status][ci-image]][ci-url]
+[![NPM Version][npm-image]][npm-url]
+[![NPM Downloads][downloads-image]][downloads-url]
+[![Node.js Version][node-version-image]][node-version-url]
+[![Build Status][github-actions-ci-image]][github-actions-ci-url]
 [![Test Coverage][coveralls-image]][coveralls-url]
 
-Create HTTP errors for Express, Koa, Connect, etc. with ease.
+An HTTP content negotiator for Node.js
 
-## Install
+## Installation
 
-This is a [Node.js](https://nodejs.org/en/) module available through the
-[npm registry](https://www.npmjs.com/). Installation is done using the
-[`npm install` command](https://docs.npmjs.com/getting-started/installing-npm-packages-locally):
-
-```console
-$ npm install http-errors
-```
-
-## Example
-
-```js
-var createError = require('http-errors')
-var express = require('express')
-var app = express()
-
-app.use(function (req, res, next) {
-  if (!req.user) return next(createError(401, 'Please login to view this page.'))
-  next()
-})
+```sh
+$ npm install negotiator
 ```
 
 ## API
 
-This is the current API, currently extracted from Koa and subject to change.
-
-### Error Properties
-
-- `expose` - can be used to signal if `message` should be sent to the client,
-  defaulting to `false` when `status` >= 500
-- `headers` - can be an object of header names to values to be sent to the
-  client, defaulting to `undefined`. When defined, the key names should all
-  be lower-cased
-- `message` - the traditional error message, which should be kept short and all
-  single line
-- `status` - the status code of the error, mirroring `statusCode` for general
-  compatibility
-- `statusCode` - the status code of the error, defaulting to `500`
-
-### createError([status], [message], [properties])
-
-Create a new error object with the given message `msg`.
-The error object inherits from `createError.HttpError`.
-
 ```js
-var err = createError(404, 'This video does not exist!')
+var Negotiator = require('negotiator')
 ```
 
-- `status: 500` - the status code as a number
-- `message` - the message of the error, defaulting to node's text for that status code.
-- `properties` - custom properties to attach to the object
-
-### createError([status], [error], [properties])
-
-Extend the given `error` object with `createError.HttpError`
-properties. This will not alter the inheritance of the given
-`error` object, and the modified `error` object is the
-return value.
-
-<!-- eslint-disable no-redeclare -->
+### Accept Negotiation
 
 ```js
-fs.readFile('foo.txt', function (err, buf) {
-  if (err) {
-    if (err.code === 'ENOENT') {
-      var httpError = createError(404, err, { expose: false })
-    } else {
-      var httpError = createError(500, err)
-    }
-  }
-})
+availableMediaTypes = ['text/html', 'text/plain', 'application/json']
+
+// The negotiator constructor receives a request object
+negotiator = new Negotiator(request)
+
+// Let's say Accept header is 'text/html, application/*;q=0.2, image/jpeg;q=0.8'
+
+negotiator.mediaTypes()
+// -> ['text/html', 'image/jpeg', 'application/*']
+
+negotiator.mediaTypes(availableMediaTypes)
+// -> ['text/html', 'application/json']
+
+negotiator.mediaType(availableMediaTypes)
+// -> 'text/html'
 ```
 
-- `status` - the status code as a number
-- `error` - the error object to extend
-- `properties` - custom properties to attach to the object
+You can check a working example at `examples/accept.js`.
 
-### createError.isHttpError(val)
+#### Methods
 
-Determine if the provided `val` is an `HttpError`. This will return `true`
-if the error inherits from the `HttpError` constructor of this module or
-matches the "duck type" for an error this module creates. All outputs from
-the `createError` factory will return `true` for this function, including
-if an non-`HttpError` was passed into the factory.
+##### mediaType()
 
-### new createError\[code || name\](\[msg]\))
+Returns the most preferred media type from the client.
 
-Create a new error object with the given message `msg`.
-The error object inherits from `createError.HttpError`.
+##### mediaType(availableMediaType)
+
+Returns the most preferred media type from a list of available media types.
+
+##### mediaTypes()
+
+Returns an array of preferred media types ordered by the client preference.
+
+##### mediaTypes(availableMediaTypes)
+
+Returns an array of preferred media types ordered by priority from a list of
+available media types.
+
+### Accept-Language Negotiation
 
 ```js
-var err = new createError.NotFound()
+negotiator = new Negotiator(request)
+
+availableLanguages = ['en', 'es', 'fr']
+
+// Let's say Accept-Language header is 'en;q=0.8, es, pt'
+
+negotiator.languages()
+// -> ['es', 'pt', 'en']
+
+negotiator.languages(availableLanguages)
+// -> ['es', 'en']
+
+language = negotiator.language(availableLanguages)
+// -> 'es'
 ```
 
-- `code` - the status code as a number
-- `name` - the name of the error as a "bumpy case", i.e. `NotFound` or `InternalServerError`.
+You can check a working example at `examples/language.js`.
 
-#### List of all constructors
+#### Methods
 
-|Status Code|Constructor Name             |
-|-----------|-----------------------------|
-|400        |BadRequest                   |
-|401        |Unauthorized                 |
-|402        |PaymentRequired              |
-|403        |Forbidden                    |
-|404        |NotFound                     |
-|405        |MethodNotAllowed             |
-|406        |NotAcceptable                |
-|407        |ProxyAuthenticationRequired  |
-|408        |RequestTimeout               |
-|409        |Conflict                     |
-|410        |Gone                         |
-|411        |LengthRequired               |
-|412        |PreconditionFailed           |
-|413        |PayloadTooLarge              |
-|414        |URITooLong                   |
-|415        |UnsupportedMediaType         |
-|416        |RangeNotSatisfiable          |
-|417        |ExpectationFailed            |
-|418        |ImATeapot                    |
-|421        |MisdirectedRequest           |
-|422        |UnprocessableEntity          |
-|423        |Locked                       |
-|424        |FailedDependency             |
-|425        |TooEarly                     |
-|426        |UpgradeRequired              |
-|428        |PreconditionRequired         |
-|429        |TooManyRequests              |
-|431        |RequestHeaderFieldsTooLarge  |
-|451        |UnavailableForLegalReasons   |
-|500        |InternalServerError          |
-|501        |NotImplemented               |
-|502        |BadGateway                   |
-|503        |ServiceUnavailable           |
-|504        |GatewayTimeout               |
-|505        |HTTPVersionNotSupported      |
-|506        |VariantAlsoNegotiates        |
-|507        |InsufficientStorage          |
-|508        |LoopDetected                 |
-|509        |BandwidthLimitExceeded       |
-|510        |NotExtended                  |
-|511        |NetworkAuthenticationRequired|
+##### language()
+
+Returns the most preferred language from the client.
+
+##### language(availableLanguages)
+
+Returns the most preferred language from a list of available languages.
+
+##### languages()
+
+Returns an array of preferred languages ordered by the client preference.
+
+##### languages(availableLanguages)
+
+Returns an array of preferred languages ordered by priority from a list of
+available languages.
+
+### Accept-Charset Negotiation
+
+```js
+availableCharsets = ['utf-8', 'iso-8859-1', 'iso-8859-5']
+
+negotiator = new Negotiator(request)
+
+// Let's say Accept-Charset header is 'utf-8, iso-8859-1;q=0.8, utf-7;q=0.2'
+
+negotiator.charsets()
+// -> ['utf-8', 'iso-8859-1', 'utf-7']
+
+negotiator.charsets(availableCharsets)
+// -> ['utf-8', 'iso-8859-1']
+
+negotiator.charset(availableCharsets)
+// -> 'utf-8'
+```
+
+You can check a working example at `examples/charset.js`.
+
+#### Methods
+
+##### charset()
+
+Returns the most preferred charset from the client.
+
+##### charset(availableCharsets)
+
+Returns the most preferred charset from a list of available charsets.
+
+##### charsets()
+
+Returns an array of preferred charsets ordered by the client preference.
+
+##### charsets(availableCharsets)
+
+Returns an array of preferred charsets ordered by priority from a list of
+available charsets.
+
+### Accept-Encoding Negotiation
+
+```js
+availableEncodings = ['identity', 'gzip']
+
+negotiator = new Negotiator(request)
+
+// Let's say Accept-Encoding header is 'gzip, compress;q=0.2, identity;q=0.5'
+
+negotiator.encodings()
+// -> ['gzip', 'identity', 'compress']
+
+negotiator.encodings(availableEncodings)
+// -> ['gzip', 'identity']
+
+negotiator.encoding(availableEncodings)
+// -> 'gzip'
+```
+
+You can check a working example at `examples/encoding.js`.
+
+#### Methods
+
+##### encoding()
+
+Returns the most preferred encoding from the client.
+
+##### encoding(availableEncodings)
+
+Returns the most preferred encoding from a list of available encodings.
+
+##### encodings()
+
+Returns an array of preferred encodings ordered by the client preference.
+
+##### encodings(availableEncodings)
+
+Returns an array of preferred encodings ordered by priority from a list of
+available encodings.
+
+## See Also
+
+The [accepts](https://npmjs.org/package/accepts#readme) module builds on
+this module and provides an alternative interface, mime type validation,
+and more.
 
 ## License
 
 [MIT](LICENSE)
 
-[ci-image]: https://badgen.net/github/checks/jshttp/http-errors/master?label=ci
-[ci-url]: https://github.com/jshttp/http-errors/actions?query=workflow%3Aci
-[coveralls-image]: https://badgen.net/coveralls/c/github/jshttp/http-errors/master
-[coveralls-url]: https://coveralls.io/r/jshttp/http-errors?branch=master
-[node-image]: https://badgen.net/npm/node/http-errors
-[node-url]: https://nodejs.org/en/download
-[npm-downloads-image]: https://badgen.net/npm/dm/http-errors
-[npm-url]: https://npmjs.org/package/http-errors
-[npm-version-image]: https://badgen.net/npm/v/http-errors
-[travis-image]: https://badgen.net/travis/jshttp/http-errors/master
-[travis-url]: https://travis-ci.org/jshttp/http-errors
+[npm-image]: https://img.shields.io/npm/v/negotiator.svg
+[npm-url]: https://npmjs.org/package/negotiator
+[node-version-image]: https://img.shields.io/node/v/negotiator.svg
+[node-version-url]: https://nodejs.org/en/download/
+[coveralls-image]: https://img.shields.io/coveralls/jshttp/negotiator/master.svg
+[coveralls-url]: https://coveralls.io/r/jshttp/negotiator?branch=master
+[downloads-image]: https://img.shields.io/npm/dm/negotiator.svg
+[downloads-url]: https://npmjs.org/package/negotiator
+[github-actions-ci-image]: https://img.shields.io/github/workflow/status/jshttp/negotiator/ci/master?label=ci
+[github-actions-ci-url]: https://github.com/jshttp/negotiator/actions/workflows/ci.yml

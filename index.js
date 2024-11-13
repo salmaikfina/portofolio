@@ -1,10 +1,11 @@
-/**
- * Detect Electron renderer process, which is node, but we should
- * treat as a browser.
+/*!
+ * express
+ * Copyright(c) 2009-2013 TJ Holowaychuk
+ * Copyright(c) 2013 Roman Shtylman
+ * Copyright(c) 2014-2015 Douglas Christopher Wilson
+ * MIT Licensed
  */
 
-if (typeof process !== 'undefined' && process.type === 'renderer') {
-  module.exports = require('./browser.js');
-} else {
-  module.exports = require('./node.js');
-}
+'use strict';
+
+module.exports = require('./lib/express');

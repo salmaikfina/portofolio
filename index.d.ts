@@ -1,7 +1,27 @@
-declare namespace setFunctionLength {
-    type Func = (...args: unknown[]) => unknown;
+declare namespace getSideChannel {
+	type Key = unknown;
+	type ListNode<T> = {
+		key: Key;
+		next: ListNode<T>;
+		value: T;
+	};
+	type RootNode<T> = {
+		key: object;
+		next: null | ListNode<T>;
+	};
+	function listGetNode<T>(list: RootNode<T>, key: ListNode<T>['key']): ListNode<T> | void;
+	function listGet<T>(objects: RootNode<T>, key: ListNode<T>['key']): T | void;
+	function listSet<T>(objects: RootNode<T>, key: ListNode<T>['key'], value: T): void;
+	function listHas<T>(objects: RootNode<T>, key: ListNode<T>['key']): boolean;
+
+	type Channel = {
+		assert: (key: Key) => void;
+		has: (key: Key) => boolean;
+		get: <T>(key: Key) => T;
+		set: <T>(key: Key, value: T) => void;
+	}
 }
 
-declare function setFunctionLength<T extends setFunctionLength.Func = setFunctionLength.Func>(fn: T, length: number, loose?: boolean): T;
+declare function getSideChannel(): getSideChannel.Channel;
 
-export = setFunctionLength;
+export = getSideChannel;

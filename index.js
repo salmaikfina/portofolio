@@ -1,209 +1,149 @@
 /*!
- * serve-static
- * Copyright(c) 2010 Sencha Inc.
- * Copyright(c) 2011 TJ Holowaychuk
- * Copyright(c) 2014-2016 Douglas Christopher Wilson
+ * vary
+ * Copyright(c) 2014-2017 Douglas Christopher Wilson
  * MIT Licensed
  */
 
 'use strict'
 
 /**
- * Module dependencies.
- * @private
- */
-
-var encodeUrl = require('encodeurl')
-var escapeHtml = require('escape-html')
-var parseUrl = require('parseurl')
-var resolve = require('path').resolve
-var send = require('send')
-var url = require('url')
-
-/**
  * Module exports.
- * @public
  */
 
-module.exports = serveStatic
-module.exports.mime = send.mime
+module.exports = vary
+module.exports.append = append
 
 /**
- * @param {string} root
- * @param {object} [options]
- * @return {function}
- * @public
- */
-
-function serveStatic (root, options) {
-  if (!root) {
-    throw new TypeError('root path required')
-  }
-
-  if (typeof root !== 'string') {
-    throw new TypeError('root path must be a string')
-  }
-
-  // copy options object
-  var opts = Object.create(options || null)
-
-  // fall-though
-  var fallthrough = opts.fallthrough !== false
-
-  // default redirect
-  var redirect = opts.redirect !== false
-
-  // headers listener
-  var setHeaders = opts.setHeaders
-
-  if (setHeaders && typeof setHeaders !== 'function') {
-    throw new TypeError('option setHeaders must be function')
-  }
-
-  // setup options for send
-  opts.maxage = opts.maxage || opts.maxAge || 0
-  opts.root = resolve(root)
-
-  // construct directory listener
-  var onDirectory = redirect
-    ? createRedirectDirectoryListener()
-    : createNotFoundDirectoryListener()
-
-  return function serveStatic (req, res, next) {
-    if (req.method !== 'GET' && req.method !== 'HEAD') {
-      if (fallthrough) {
-        return next()
-      }
-
-      // method not allowed
-      res.statusCode = 405
-      res.setHeader('Allow', 'GET, HEAD')
-      res.setHeader('Content-Length', '0')
-      res.end()
-      return
-    }
-
-    var forwardError = !fallthrough
-    var originalUrl = parseUrl.original(req)
-    var path = parseUrl(req).pathname
-
-    // make sure redirect occurs at mount
-    if (path === '/' && originalUrl.pathname.substr(-1) !== '/') {
-      path = ''
-    }
-
-    // create send stream
-    var stream = send(req, path, opts)
-
-    // add directory handler
-    stream.on('directory', onDirectory)
-
-    // add headers listener
-    if (setHeaders) {
-      stream.on('headers', setHeaders)
-    }
-
-    // add file listener for fallthrough
-    if (fallthrough) {
-      stream.on('file', function onFile () {
-        // once file is determined, always forward error
-        forwardError = true
-      })
-    }
-
-    // forward errors
-    stream.on('error', function error (err) {
-      if (forwardError || !(err.statusCode < 500)) {
-        next(err)
-        return
-      }
-
-      next()
-    })
-
-    // pipe
-    stream.pipe(res)
-  }
-}
-
-/**
- * Collapse all leading slashes into a single slash
- * @private
- */
-function collapseLeadingSlashes (str) {
-  for (var i = 0; i < str.length; i++) {
-    if (str.charCodeAt(i) !== 0x2f /* / */) {
-      break
-    }
-  }
-
-  return i > 1
-    ? '/' + str.substr(i)
-    : str
-}
-
-/**
- * Create a minimal HTML document.
+ * RegExp to match field-name in RFC 7230 sec 3.2
  *
- * @param {string} title
- * @param {string} body
- * @private
+ * field-name    = token
+ * token         = 1*tchar
+ * tchar         = "!" / "#" / "$" / "%" / "&" / "'" / "*"
+ *               / "+" / "-" / "." / "^" / "_" / "`" / "|" / "~"
+ *               / DIGIT / ALPHA
+ *               ; any VCHAR, except delimiters
  */
 
-function createHtmlDocument (title, body) {
-  return '<!DOCTYPE html>\n' +
-    '<html lang="en">\n' +
-    '<head>\n' +
-    '<meta charset="utf-8">\n' +
-    '<title>' + title + '</title>\n' +
-    '</head>\n' +
-    '<body>\n' +
-    '<pre>' + body + '</pre>\n' +
-    '</body>\n' +
-    '</html>\n'
-}
+var FIELD_NAME_REGEXP = /^[!#$%&'*+\-.^_`|~0-9A-Za-z]+$/
 
 /**
- * Create a directory listener that just 404s.
- * @private
+ * Append a field to a vary header.
+ *
+ * @param {String} header
+ * @param {String|Array} field
+ * @return {String}
+ * @public
  */
 
-function createNotFoundDirectoryListener () {
-  return function notFound () {
-    this.error(404)
+function append (header, field) {
+  if (typeof header !== 'string') {
+    throw new TypeError('header argument is required')
   }
+
+  if (!field) {
+    throw new TypeError('field argument is required')
+  }
+
+  // get fields array
+  var fields = !Array.isArray(field)
+    ? parse(String(field))
+    : field
+
+  // assert on invalid field names
+  for (var j = 0; j < fields.length; j++) {
+    if (!FIELD_NAME_REGEXP.test(fields[j])) {
+      throw new TypeError('field argument contains an invalid header name')
+    }
+  }
+
+  // existing, unspecified vary
+  if (header === '*') {
+    return header
+  }
+
+  // enumerate current values
+  var val = header
+  var vals = parse(header.toLowerCase())
+
+  // unspecified vary
+  if (fields.indexOf('*') !== -1 || vals.indexOf('*') !== -1) {
+    return '*'
+  }
+
+  for (var i = 0; i < fields.length; i++) {
+    var fld = fields[i].toLowerCase()
+
+    // append value (case-preserving)
+    if (vals.indexOf(fld) === -1) {
+      vals.push(fld)
+      val = val
+        ? val + ', ' + fields[i]
+        : fields[i]
+    }
+  }
+
+  return val
 }
 
 /**
- * Create a directory listener that performs a redirect.
+ * Parse a vary header into an array.
+ *
+ * @param {String} header
+ * @return {Array}
  * @private
  */
 
-function createRedirectDirectoryListener () {
-  return function redirect (res) {
-    if (this.hasTrailingSlash()) {
-      this.error(404)
-      return
+function parse (header) {
+  var end = 0
+  var list = []
+  var start = 0
+
+  // gather tokens
+  for (var i = 0, len = header.length; i < len; i++) {
+    switch (header.charCodeAt(i)) {
+      case 0x20: /*   */
+        if (start === end) {
+          start = end = i + 1
+        }
+        break
+      case 0x2c: /* , */
+        list.push(header.substring(start, end))
+        start = end = i + 1
+        break
+      default:
+        end = i + 1
+        break
     }
+  }
 
-    // get original URL
-    var originalUrl = parseUrl.original(this.req)
+  // final token
+  list.push(header.substring(start, end))
 
-    // append trailing slash
-    originalUrl.path = null
-    originalUrl.pathname = collapseLeadingSlashes(originalUrl.pathname + '/')
+  return list
+}
 
-    // reformat the URL
-    var loc = encodeUrl(url.format(originalUrl))
-    var doc = createHtmlDocument('Redirecting', 'Redirecting to ' + escapeHtml(loc))
+/**
+ * Mark that a request is varied on a header field.
+ *
+ * @param {Object} res
+ * @param {String|Array} field
+ * @public
+ */
 
-    // send redirect response
-    res.statusCode = 301
-    res.setHeader('Content-Type', 'text/html; charset=UTF-8')
-    res.setHeader('Content-Length', Buffer.byteLength(doc))
-    res.setHeader('Content-Security-Policy', "default-src 'none'")
-    res.setHeader('X-Content-Type-Options', 'nosniff')
-    res.setHeader('Location', loc)
-    res.end(doc)
+function vary (res, field) {
+  if (!res || !res.getHeader || !res.setHeader) {
+    // quack quack
+    throw new TypeError('res argument is required')
+  }
+
+  // get existing header
+  var val = res.getHeader('Vary') || ''
+  var header = Array.isArray(val)
+    ? val.join(', ')
+    : String(val)
+
+  // set new header
+  if ((val = append(header, field))) {
+    res.setHeader('Vary', val)
   }
 }
